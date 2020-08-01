@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>
+      自助大丈夫
+    </title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+      integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="canonical"
+      href="https://letswrite.tw/google-map-api-distance-matrix/"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./js/nav.js"></script>
+    <style>
+      body {
+        font-family: "Noto Sans TC";
+      }
+
+      i {
+        font-size: 1.3rem;
+        cursor: pointer;
+      }
+
+      i:hover {
+        font-weight: bold;
+      }
+
+      #map {
+        background: #ccc;
+      }
+
+      #addToSchedule:hover {
+        font-weight: bold;
+      }
+
+      .flip-list {
+        transition: all 0.5s ease;
+        cursor: grab;
+      }
+
+      /* footer */
+
+      .btnSmall {
+        width: 70px;
+        height: 25px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnSmall:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .btnMid {
+        width: 120px;
+        height: 40px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnMid:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .btnLarge {
+        width: 190px;
+        height: 66px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnLarge:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      footer {
+        line-height: 20px;
+        letter-spacing: 1.5px;
+        padding: 30px;
+        background: #bc2654;
+        display: swap;
+      }
+
+      footer .copyright {
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 1rem;
+        text-align: center;
+        margin-top: 40px;
+        margin-bottom: 30px;
+      }
+
+      div.ft {
+        text-align: center;
+      }
+
+      div.ft .row .ft_column {
+        white-space: nowrap;
+      }
+
+      div.ft .row .ft_column img {
+        -webkit-transform: translateY(35px) translateX(-25px);
+        transform: translateY(35px) translateX(-25px);
+        width: 60px;
+      }
+
+      div.ft .row .ft_column p {
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        display: inline-block;
+      }
+
+      div.ft .row .ft_column ul {
+        list-style: none;
+      }
+
+      div.ft .row .ft_column ul li a {
+        color: white;
+        opacity: 0.76;
+        font-size: 1rem;
+      }
+
+      div.ft .row .ft_column ul li a:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 576px) {
+        .ft {
+          display: none;
+        }
+      }
+      /*# sourceMappingURL=style.css.map */
+      /* nav */
+
+      .nav-linkplan::after {
+        width: 100% !important;
+      }
+      .nav-linkMember:hover {
+        cursor: pointer;
+      }
+
+      .btnSmall {
+        width: 70px;
+        height: 25px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnSmall:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .btnMid {
+        width: 120px;
+        height: 40px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnMid:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .btnLarge {
+        width: 190px;
+        height: 66px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .btnLarge:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .mainBody {
+        width: 100%;
+        max-width: 1920px;
+        background-color: #ededed;
+        position: relative;
+      }
+
+      .mainBody .navBg {
+        height: 80px;
+        background-color: white;
+        z-index: 5;
+        position: fixed;
+        top: 0;
+        width: 100%;
+      }
+
+      .mainBody .navBg .nav {
+        font-weight: bold;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 1200px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .mainBody .navBg .nav .navLeft {
+        padding-left: 10px;
+      }
+
+      .mainBody .navBg .nav .navLeft a {
+        padding: 5px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        color: #393939;
+      }
+
+      .mainBody .navBg .nav .navLeft a img {
+        height: 65px;
+      }
+
+      .mainBody .navBg .nav .navLeft a div.daijoubu {
+        width: 180px;
+        margin-left: 10px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: end;
+        -ms-flex-pack: end;
+        justify-content: flex-end;
+        line-height: 25px;
+        letter-spacing: 1.5px;
+      }
+
+      .mainBody .navBg .nav .navLeft a div.daijoubu .daijoubuMd {
+        font-size: 24px;
+      }
+
+      .mainBody .navBg .nav .navLeft a div.daijoubu .daijoubuEn {
+        padding: 3px;
+        font-size: 14px;
+      }
+
+      .mainBody .navBg .nav .navCenter {
+        width: 414px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+      }
+
+      .mainBody .navBg .nav .navCenter a {
+        width: 80px;
+        height: 50px;
+        text-align: center;
+        padding: 3px;
+        padding-top: 10px;
+        line-height: 30px;
+        color: #393939;
+      }
+
+      .mainBody .navBg .nav .navCenter a::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        margin: 0 auto;
+        background: #bc2654;
+        -webkit-transition: width 0.3s;
+        transition: width 0.3s;
+      }
+
+      .mainBody .navBg .nav .navCenter a:hover::after {
+        width: 100%;
+      }
+
+      .mainBody .navBg .nav .navRight {
+        width: 145px;
+        margin-right: 15px;
+        padding: 10px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+      }
+
+      .mainBody .navBg .nav .navRight a {
+        padding: 0;
+        line-height: 70px;
+        color: #393939;
+      }
+
+      .mainBody .navBg .nav .navRight a:hover {
+        cursor: pointer;
+      }
+
+      .mainBody .navBg .nav .navRight a img {
+        width: 20px;
+        margin-right: 5px;
+        -webkit-transform: translateY(-2px);
+        transform: translateY(-2px);
+      }
+
+      .mainBody .navBg .nav .navRight #memberPic {
+        display: none;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+
+      .mainBody .navBg .nav .navRight #memberPic img {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: cover;
+        object-fit: cover;
+      }
+
+      .mainBody .navBg .navSmall {
+        display: none;
+      }
+
+      @media screen and (max-width: 950px) {
+        .mainBody .navBg {
+          height: 70px;
+        }
+        .mainBody .navBg .nav {
+          display: none;
+        }
+        .mainBody .navBg .navSmall {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
+          align-items: center;
+          -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+          justify-content: space-between;
+          position: relative;
+        }
+        .mainBody .navBg .navSmall .navSmallCenter {
+          padding: 5px;
+          -webkit-transform: translateX(-35px);
+          transform: translateX(-35px);
+        }
+        .mainBody .navBg .navSmall .navSmallCenter img {
+          height: 60px;
+        }
+        .mainBody .navBg .navSmall .navSmallRight {
+          margin-right: 20px;
+          font-size: 16px;
+        }
+        .mainBody .navBg .navSmall .navSmallRight:hover {
+          cursor: pointer;
+        }
+        .mainBody .navBg .navSmall .navSmallRight1 {
+          margin-right: 20px;
+          font-size: 16px;
+        }
+        .mainBody .navBg .navSmall .navSmallRight1:hover {
+          cursor: pointer;
+        }
+      }
+
+      #panel {
+        padding: 30px;
+        display: none;
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.9);
+        position: absolute;
+        top: 70px;
+        width: 100%;
+        z-index: 30;
+      }
+
+      #panel a {
+        font-size: 1.25rem;
+        color: #393939;
+        text-decoration: none;
+        padding: 10px;
+        display: block;
+      }
+
+      #panel a:hover {
+        color: #bc2654;
+      }
+
+      .hamburger {
+        padding: 15px 25px;
+        display: inline-block;
+        cursor: pointer;
+        -webkit-transition-property: opacity, -webkit-filter;
+        transition-property: opacity, -webkit-filter;
+        transition-property: opacity, filter;
+        transition-property: opacity, filter, -webkit-filter;
+        -webkit-transition-duration: 0.15s;
+        transition-duration: 0.15s;
+        -webkit-transition-timing-function: linear;
+        transition-timing-function: linear;
+        font: inherit;
+        color: inherit;
+        text-transform: none;
+        background-color: transparent;
+        border: 0;
+        margin: 0;
+        overflow: visible;
+      }
+
+      .hamburger:hover {
+        opacity: 0.7;
+      }
+
+      .hamburger.is-active:hover {
+        opacity: 0.7;
+      }
+
+      .hamburger.is-active .hamburger-inner,
+      .hamburger.is-active .hamburger-inner::before,
+      .hamburger.is-active .hamburger-inner::after {
+        background-color: #000;
+      }
+
+      .hamburger-box {
+        width: 30px;
+        height: 24px;
+        display: inline-block;
+        position: relative;
+      }
+
+      .hamburger-inner {
+        display: block;
+        top: 50%;
+        margin-top: -2px;
+      }
+
+      .hamburger-inner,
+      .hamburger-inner::before,
+      .hamburger-inner::after {
+        width: 30px;
+        height: 2px;
+        background-color: #000;
+        border-radius: 4px;
+        position: absolute;
+        -webkit-transition-property: -webkit-transform;
+        transition-property: -webkit-transform;
+        transition-property: transform;
+        transition-property: transform, -webkit-transform;
+        -webkit-transition-duration: 0.15s;
+        transition-duration: 0.15s;
+        -webkit-transition-timing-function: ease;
+        transition-timing-function: ease;
+      }
+
+      .hamburger-inner::before,
+      .hamburger-inner::after {
+        content: "";
+        display: block;
+      }
+
+      .hamburger-inner::before {
+        top: -10px;
+      }
+
+      .hamburger-inner::after {
+        bottom: -10px;
+      }
+
+      .hamburger--collapse .hamburger-inner {
+        top: auto;
+        bottom: 0;
+        -webkit-transition-duration: 0.13s;
+        transition-duration: 0.13s;
+        -webkit-transition-delay: 0.13s;
+        transition-delay: 0.13s;
+        -webkit-transition-timing-function: cubic-bezier(
+          0.55,
+          0.055,
+          0.675,
+          0.19
+        );
+        transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+
+      .hamburger--collapse .hamburger-inner::after {
+        top: -20px;
+        -webkit-transition: top 0.2s 0.2s
+            cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          opacity 0.1s linear;
+        transition: top 0.2s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          opacity 0.1s linear;
+      }
+
+      .hamburger--collapse .hamburger-inner::before {
+        -webkit-transition: top 0.12s 0.2s
+            cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          -webkit-transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        transition: top 0.12s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          -webkit-transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        transition: top 0.12s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+        transition: top 0.12s 0.2s cubic-bezier(0.33333, 0.66667, 0.66667, 1),
+          transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19),
+          -webkit-transform 0.13s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+      }
+
+      .hamburger--collapse.is-active .hamburger-inner {
+        -webkit-transform: translate3d(0, -10px, 0) rotate(-45deg);
+        transform: translate3d(0, -10px, 0) rotate(-45deg);
+        -webkit-transition-delay: 0.22s;
+        transition-delay: 0.22s;
+        -webkit-transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      .hamburger--collapse.is-active .hamburger-inner::after {
+        top: 0;
+        opacity: 0;
+        -webkit-transition: top 0.2s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          opacity 0.1s 0.22s linear;
+        transition: top 0.2s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          opacity 0.1s 0.22s linear;
+      }
+
+      .hamburger--collapse.is-active .hamburger-inner::before {
+        top: 0;
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+        -webkit-transition: top 0.1s 0.16s
+            cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          -webkit-transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition: top 0.1s 0.16s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          -webkit-transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition: top 0.1s 0.16s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+        transition: top 0.1s 0.16s cubic-bezier(0.33333, 0, 0.66667, 0.33333),
+          transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1),
+          -webkit-transform 0.13s 0.25s cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+      /*# sourceMappingURL=style.css.map */
+      /* login */
+
+      .loginnamea {
+        background-color: #ffeded;
+        margin: 0 0 -1 0;
+        font-weight: 500;
+      }
+
+      .logincont {
+        background-color: #ededed;
+        text-align: center;
+        font-size: 1.25rem;
+        padding: 5px;
+      }
+
+      .logintitle {
+        color: #bc2654;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .loginacc .loginpsdw {
+        border-color: white;
+        font-size: 1.25rem;
+        margin-top: 20px;
+      }
+
+      .loginrightbutton {
+        width: 88px;
+        height: 33px;
+        font-size: 1rem;
+        color: #bc2654;
+        background-color: white;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        margin-left: 25px;
+        cursor: pointer;
+      }
+
+      .loginrightbutton:hover {
+        color: white;
+        background-color: #bc2654;
+      }
+
+      .loginleftbutton {
+        width: 90px;
+        height: 35px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid white;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        cursor: pointer;
+      }
+
+      .loginleftbutton:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .logintwobtn {
+        text-align: center;
+        margin: 20px;
+      }
+
+      .loginall {
+        width: 500px;
+        color: #393939;
+      }
+
+      .modal-backdrop {
+        z-index: auto !important;
+      }
+
+      @media screen and (max-width: 576px) {
+        .loginall {
+          width: 100%;
+        }
+        .logintwobtn {
+          text-align: center;
+          margin: 10px;
+        }
+      }
+      /*# sourceMappingURL=style.css.map */
+      /* enrollMem */
+
+      .enrollnamea {
+        background-color: #ffeded;
+        margin: 0 0 -1 0;
+        font-weight: 500;
+      }
+
+      .enrollcont {
+        background-color: #ededed;
+        text-align: center;
+        font-size: 1.25rem;
+        padding: 5px;
+      }
+
+      .enrolltitle {
+        color: #bc2654;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
+      .textbox .accbox .psdwbox .accconbox {
+        border-color: white;
+        font-size: 1.25rem;
+        margin-top: 20px;
+      }
+
+      .enrollgend {
+        margin-right: 43px;
+      }
+
+      .moreinfo {
+        resize: none;
+        -webkit-box-shadow: 2px 2px 1px white inset;
+        box-shadow: 2px 2px 1px white inset;
+      }
+
+      .enrollphone {
+        margin-top: 21px;
+      }
+
+      .enrollrightbutton {
+        width: 88px;
+        height: 33px;
+        font-size: 1rem;
+        color: #bc2654;
+        background-color: white;
+        border: 1px solid #bc2654;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        margin-left: 25px;
+        cursor: pointer;
+      }
+
+      .enrollrightbutton:hover {
+        color: white;
+        background-color: #bc2654;
+      }
+
+      .enrollleftbutton {
+        width: 90px;
+        height: 35px;
+        font-size: 1rem;
+        color: white;
+        background-color: #bc2654;
+        border: 1px solid white;
+        border-radius: 5px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        cursor: pointer;
+      }
+
+      .enrollleftbutton:hover {
+        color: #bc2654;
+        background-color: white;
+      }
+
+      .enrolltwobtn {
+        text-align: center;
+        margin: 20px;
+      }
+
+      .enrollall {
+        width: 500px;
+        color: #393939;
+      }
+
+      @media screen and (max-width: 576px) {
+        .enrollall {
+          width: 100%;
+        }
+        .enrolltwobtn {
+          text-align: center;
+          margin: 10px;
+        }
+      }
+      /*# sourceMappingURL=style.css.map */
+
+      #aLogin,
+      #aRegist {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app">
+      <attrac-nav></attrac-nav>
+      <div class="container px-1" style="margin-top: 80px;">
+        <attraction-list></attraction-list>
+      </div>
+      <attrac-footer></attrac-footer>
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVE3uJnGBC-aSoc_OTsrjJo7cUZBez4uo"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
+
+    <script>
+      Vue.component("attraction-input", {
+        template: `
+              <div class="container py-5">
+                <div class="row">
+                  <div class="d-flex col-md-10 px-0">
+                    <div class=" input-group p-0">
+                      <input type="text" class="form-control" v-model="queryAttractionName" @keydown.enter='sendInputToAttractionList' placeholder="搜尋景點名稱">
+                      <div class="input-group-append">
+                        <span class="input-group-text rounded-right px-2" id="basic-addon2"><i class="fas fa-search" style="font-size:0.9rem;"></i></span>
+                      </div>
+                    </div>
+
+                    <div class=" p-0">
+                      <select @change="sendRegionSelectToAttractionList" class="align-top px-1 d-inline-block form-control form-control h-100" style="font-size:0.9rem;width:6rem;">
+                       <option>地區</option>
+                       <option value="新北市">新北市</option>
+                       <option value="新竹縣">新竹縣</option>
+                       <option value="苗栗縣">苗栗縣</option>
+                       <option value="臺中市">臺中市</option>
+                       <option value="彰化縣">彰化縣</option>
+                       <option value="南投縣">南投縣</option>
+                       <option value="雲林縣">雲林縣</option>
+                       <option value="嘉義縣">嘉義縣</option>
+                       <option value="臺南市">臺南市</option>
+                       <option value="高雄市">高雄市</option>
+                       <option value="屏東縣">屏東縣</option>
+                       <option value="花蓮縣">花蓮縣</option>
+                       <option value="臺東縣">臺東縣</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-2 px-0">
+                      <button @click="sendKeepAttracSearchToAttractionList" type="button" class="border align-top px-1 h-100 btn dblock w-100 btn-light" style="font-size:0.9rem; color:#bc2654"><i class="fas fa-heart" style="color:#bc2654; font-size:0.9rem;"></i> 我的收藏景點</button>
+                  </div>
+                </div>
+              </div>
+                                `,
+        data() {
+          return {
+            queryAttractionName: "",
+            inputValueForRegionSearch: "",
+          };
+        },
+        methods: {
+          sendInputToAttractionList(e) {
+            this.$emit("abc", this.queryAttractionName);
+            // this.queryAttractionName = "";
+            this.inputValueForRegionSearch = e.target.value;
+            // console.log(this.inputValueForRegionSearch);
+          },
+          sendKeepAttracSearchToAttractionList() {
+            this.$emit("abc2");
+          },
+          sendRegionSelectToAttractionList(e) {
+            // console.log(e.target.value);
+            // console.log(this.inputValueForRegionSearch);
+            this.$emit("abc3", e.target.value, this.queryAttractionName);
+          },
+        },
+      });
+
+      Vue.component("attraction-list", {
+        template: `
+                            <div>
+                              <attrac-modal @jkl="addSelectedAttractionsToDirection" @def3="saveKeepAttrap" :label4="attracModal"></attrac-modal>
+
+                              <attraction-input @abc="getSearchedAttractionsFromPHP" @abc2="getSearchedKeepAttractionsFromPHP" @abc3="getSearchedRegionAttractionsFromPHP"></attraction-input>
+
+                              <cards class="d-block" style="height:16.5rem; overflow-x:scroll;white-space: nowrap;background-color:rgba(0,0,0,0.04);">
+                                <attraction-item
+                                @def="addSelectedAttractionsToDirection" @def2="addSelectedAttractionsToModal" @def3="saveKeepAttrap" v-for="searchedAttraction in searchedAttractions" v-bind:label="searchedAttraction"></attraction-item>
+                              </cards>
+
+                              <div class="container my-5" >
+                                <div class="row" >
+                                  <div class="border-top border-left border-bottom px-1 col-lg-4" style="background-color:rgba(0,0,0,0.04);">
+                                    <div class="d-flex mt-3">
+                                      <input v-model="toBeSavedSchedule.scheName" type="text" class="w-100 border-top-0 border-left-0 border-right-0 form-control  text-truncate text-center" placeholder="請輸入行程名稱" required="required" style="color:#bc2654">
+                                      <i role="button" @click="saveSchedule" class="my-auto far fa-save mx-2 text-black-50 " style="cursor:pointer;"></i>
+                                      <i @click="reloadWindow" class="my-auto fas fa-trash-alt mx-2 text-black-50 "></i>
+                                    </div>
+
+
+                                    <draggable v-model="selectedAttractions">
+                                      <transition-group>
+
+                                        <attraction-direction
+                                        @ghi="removeSelectedAttraction" @sendAttracStartTimeToAttractionList="sendAttracStartTimeToBackend" @sendAttracLeaveTimeToAttractionList="sendAttracLeaveTimeToBackend"
+                                        class="border bg-light flip-list"
+                                        :key="selectedAttraction.Attrac_NO"
+                                        v-for="selectedAttraction in selectedAttractions"
+                                        v-bind:label2="selectedAttraction">
+                                        </attraction-direction>
+
+                                      </transition-group>
+                                    </draggable>
+
+
+
+                                  </div>
+                                  <div class="border col-lg-8 px-0" style="height:500px">
+                                    <div id="map" class="h-100"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                                    `,
+        data() {
+          return {
+            searchedAttractions: [],
+            selectedAttractions: [],
+            MemNO: "",
+            map: null,
+            mapCenter: {
+              lat: 23.7074865,
+              lng: 121.0007688,
+            },
+            markers: [],
+            toBeSavedSchedule: {
+              MemNO: "",
+              scheName: "",
+              scheStatus: "",
+              selectedAttractions: [],
+              attracStartTime: [],
+            },
+            attracModal: {},
+          };
+        },
+        methods: {
+          initialAttraction() {
+            $.get(`searchAttrac.php?searchedName=觀光`).then((data) => {
+              if (JSON.parse(data) == 0) {
+                alert("無此景點");
+              } else {
+                this.searchedAttractions = JSON.parse(data);
+                console.log(this.searchedAttractions);
+              }
+            });
+          },
+          getSearchedAttractionsFromPHP(x) {
+            $.get(`searchAttrac.php?searchedName=${x}`).then((data) => {
+              if (JSON.parse(data) == 0) {
+                alert("無此景點");
+              } else {
+                this.searchedAttractions = JSON.parse(data);
+                console.log(this.searchedAttractions);
+              }
+            });
+          },
+          getSearchedKeepAttractionsFromPHP() {
+            $.get("getMemberInfo.php").then((data) => {
+              let memNOFromPHP = JSON.parse(data).Mem_NO;
+              console.log(`memno:${memNOFromPHP}`);
+              if (data == "{}") {
+                alert("請先登入會員");
+              } else {
+                this.MemNO = memNOFromPHP;
+                $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then(
+                  (data) => {
+                    if (JSON.parse(data) == 0) {
+                      alert("尚無收藏任何景點");
+                    } else {
+                      this.searchedAttractions = JSON.parse(data);
+                      console.log(this.searchedAttractions);
+                    }
+                  }
+                );
+              }
+            });
+
+            // check if logged, if true, get and input MemNO:
+            // if (true) {
+            //   this.MemNO = 1;
+            // }
+            // $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then((data) => {
+            //   if (JSON.parse(data) == 0) {
+            //     alert("尚無收藏任何景點");
+            //   } else {
+            //     this.searchedAttractions = JSON.parse(data);
+            //     console.log(this.searchedAttractions);
+            //   }
+            // });
+          },
+          getSearchedRegionAttractionsFromPHP(x, y) {
+            // console.log(typeof x);
+            // console.log(typeof y);
+            if (y == "") {
+              // alert("nothing");
+              $.get(`searchAttracRegionWoInput.php?Region=${x}`).then(
+                (data) => {
+                  if (JSON.parse(data) == 0) {
+                    alert("查無景點");
+                  } else {
+                    this.searchedAttractions = JSON.parse(data);
+                    console.log(this.searchedAttractions);
+                  }
+                }
+              );
+            } else if (y != "") {
+              $.get(
+                `searchAttracRegionWInput.php?Region=${x}&searchedName=${y}`
+              ).then((data) => {
+                if (JSON.parse(data) == 0) {
+                  alert("查無景點");
+                } else {
+                  this.searchedAttractions = JSON.parse(data);
+                  console.log(this.searchedAttractions);
+                }
+              });
+            }
+          },
+          addSelectedAttractionsToDirection(x) {
+            this.selectedAttractions.push(x);
+            let latLng = new google.maps.LatLng(x.Attrac_Latit, x.Attrac_Long);
+            let marker = new google.maps.Marker({
+              position: latLng,
+              map: this.map,
+              icon:
+                "https://cdn0.iconfinder.com/data/icons/lumin-social-media-icons/512/Location-32.png",
+            });
+            // move map center to selected attraction:
+            this.map.panTo(latLng);
+
+            // add marker to markers:
+            this.markers.push(marker);
+            console.log(this.markers.length);
+
+            // add infowindow:
+            let contentString = `
+                    <div>
+                      <h6 style="font-size:0.8rem;margin-bottom:0.2rem">${x.Attrac_Name}</h6>
+                      <hr style="margin:0.2rem auto;">
+                      <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Attrac_Addre}</h6>
+                      <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Attrac_Tel}</h6>
+                      <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Website}</h6>
+
+                    </div>
+                    `;
+            let infowindow = new google.maps.InfoWindow({
+              content: contentString,
+            });
+            marker.addListener("click", function () {
+              infowindow.open(map, marker);
+            });
+          },
+
+          removeSelectedAttraction(x) {
+            // remove closed mark:
+            let n = this.selectedAttractions.indexOf(x);
+            this.markers[n].setMap(null);
+            this.markers.splice(this.selectedAttractions.indexOf(x), 1);
+
+            // remove closed attraction:
+            this.selectedAttractions.splice(
+              this.selectedAttractions.indexOf(x),
+              1
+            );
+          },
+          saveSchedule() {
+            // // check if logged, if true, get and input MemNO:
+            // if (true) {
+            //   this.toBeSavedSchedule.MemNO = 1;
+            // }
+            // // check if shceName and any attraction in direction:
+            // if (this.toBeSavedSchedule.scheName == "") {
+            //   alert("請輸入行程名稱");
+            // } else if (this.selectedAttractions.length == 0) {
+            //   alert("請輸入至少一個景點");
+            // } else {
+            //   //input scheStatus:
+            //   confirm("已完成行程編輯？")
+            //     ? (this.toBeSavedSchedule.scheStatus = 1)
+            //     : (this.toBeSavedSchedule.scheStatus = 0);
+            //   alert(this.toBeSavedSchedule.scheStatus);
+            //   // input selectedAttractions:
+            //   this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
+            //   // console.log(this.toBeSavedSchedule.selectedAttractions);
+            //   $.ajax({
+            //     method: "POST",
+            //     url: "saveSchedule.php",
+            //     data: this.toBeSavedSchedule,
+            //     dataType: "json",
+            //   });
+            // }
+
+            // /////////////////////////////////////////////////////////////
+            // check if logged, if true, get and input MemNO:
+            $.get("getMemberInfo.php").then((data) => {
+              let memNOFromPHP = JSON.parse(data).Mem_NO;
+              console.log(`memno:${memNOFromPHP}`);
+              if (data == "{}") {
+                alert("請先登入會員");
+              } else {
+                this.toBeSavedSchedule.MemNO = memNOFromPHP;
+                // check if shceName and any attraction in direction:
+                if (this.toBeSavedSchedule.scheName == "") {
+                  alert("請輸入行程名稱");
+                } else if (this.selectedAttractions.length == 0) {
+                  alert("請輸入至少一個景點");
+                } else {
+                  //input scheStatus:
+                  confirm("已完成行程編輯？")
+                    ? (this.toBeSavedSchedule.scheStatus = 1)
+                    : (this.toBeSavedSchedule.scheStatus = 0);
+                  // alert(this.toBeSavedSchedule.scheStatus);
+                  // input selectedAttractions:
+                  this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
+                  // console.log(this.toBeSavedSchedule.selectedAttractions);
+                  $.ajax({
+                    method: "POST",
+                    url: "saveSchedule.php",
+                    data: this.toBeSavedSchedule,
+                    dataType: "json",
+                  });
+                }
+              }
+            });
+          },
+          sendAttracStartTimeToBackend(x, y) {
+            let n = this.selectedAttractions.indexOf(x);
+            this.selectedAttractions[n].attracStartTime = y;
+            // console.log(this.selectedAttractions);
+          },
+          sendAttracLeaveTimeToBackend(x, y) {
+            let n = this.selectedAttractions.indexOf(x);
+            this.selectedAttractions[n].attracLeaveTime = y;
+            // console.log(this.selectedAttractions);
+          },
+          addSelectedAttractionsToModal(x) {
+            this.attracModal = x;
+            // console.log(this.attracModal);
+          },
+          saveKeepAttrap(x) {
+            // check if logged, if true, get and input MemNO:
+            $.get("getMemberInfo.php").then((data) => {
+              let memNOFromPHP = JSON.parse(data).Mem_NO;
+              console.log(memNOFromPHP);
+              if (data == "{}") {
+                alert("請先登入會員");
+              } else {
+                this.MemNO = memNOFromPHP;
+                console.log(this.MemNO);
+                let n = this.searchedAttractions.indexOf(x);
+                $.get(
+                  `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
+                ).then((data) => {
+                  if (JSON.parse(data) == 0) {
+                    $.ajax({
+                      method: "POST",
+                      url: "saveClickedKeepAttrac.php",
+                      data: {
+                        saveKeepMemNO: `${this.MemNO}`,
+                        saveKeepAttracNO: `${this.searchedAttractions[n].Attrac_NO}`,
+                      },
+                      dataType: "json",
+                    });
+                  } else {
+                    alert("已收藏過此景點");
+                  }
+                });
+              }
+            });
+
+            // if keep is not existed then save it, if keep is existed then alert :
+            // check if keep is existed:
+
+            // let n = this.searchedAttractions.indexOf(x);
+            // $.get(
+            //     `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
+            // ).then((data) => {
+            //     if (JSON.parse(data) == 0) {
+            //         $.ajax({
+            //             method: "POST",
+            //             url: "saveClickedKeepAttrac.php",
+            //             data: {
+            //                 saveKeepMemNO: `${this.MemNO}`,
+            //                 saveKeepAttracNO: `${this.searchedAttractions[n].Attrac_NO}`,
+            //             },
+            //             dataType: "json",
+            //         });
+            //     } else {
+            //         alert("已收藏過此景點");
+            //     }
+            // });
+          },
+          reloadWindow() {
+            location.reload();
+          },
+        },
+        mounted() {
+          this.initialAttraction();
+          this.map = new google.maps.Map(document.getElementById("map"), {
+            center: this.mapCenter,
+            zoom: 7.6,
+          });
+        },
+      });
+
+      Vue.component("attraction-item", {
+        template: `
+                          <card @click="sendSelectedAttractionToAttractionList2" class="card align-top m-2 p-2 d-inline-block shadow-sm" data-toggle="modal" data-target="#attracModal" style="width: 11rem;height:14rem;cursor:pointer;">
+                            <div class="position-relative cardImg overflow-hidden" style="height:11.5rem">
+                              <h5 class="position-absolute text-light" style="top:0px;left:0px;">景點</h5>
+                              <img :src='this.label.Attrac_PicURL' class="d-block h-100 mx-auto"/>
+                              <div class="position-absolute w-100 px-1" style="bottom:0px;background-color:rgba(0,0,0,0.4);">
+                                <h6 class=" text-light text-truncate mb-0 mt-1" style="font-size:0.9rem;">{{label.Attrac_Name}}</h6>
+                                <p class=" text-light text-truncate mb-1" style="font-size:0.7rem">{{label.Attrac_Region}}</p>
+                              </div>
+                            </div>
+                            <div class="container py-0">
+                              <div class="row justify-content-between">
+                                <p @click.stop="sendSelectedAttractionToAttractionList" id="addToSchedule" class=" p-1 m-0" style="color:#bc2654; font-size:0.8rem;cursor:pointer;">+ 加入行程</p>
+                                <i :class="alreadyKeep" @click.stop="sendSelectedAttractionToAttractionList3" class="p-1 pt-2 m-0 mr-2 far fa-heart" style="color:#bc2654; font-size:0.8rem;cursor:pointer;"></i>
+                              </div>
+                            </div>
+                          </card>
+                                  `,
+        props: ["label"],
+        methods: {
+          sendSelectedAttractionToAttractionList() {
+            this.$emit("def", this.label);
+          },
+          sendSelectedAttractionToAttractionList2() {
+            this.$emit("def2", this.label);
+          },
+          sendSelectedAttractionToAttractionList3(e) {
+            this.$emit("def3", this.label);
+
+            $.get("getMemberInfo.php").then((data) => {
+              if (data != "{}") {
+                e.target.classList.add("fas");
+              }
+            });
+          },
+        },
+        computed: {
+          alreadyKeep() {
+            ////////////////////////////////////////////
+            if (this.label.Keep_Attrac_NO != null) {
+              return "fas";
+            }
+          },
+        },
+      });
+
+      Vue.component("attraction-direction", {
+        data() {
+          return {
+            attracStartTime: "",
+            attracLeaveTime: "",
+          };
+        },
+        props: ["label2"],
+        template: `
+                          <div class="container my-3 py-3 pr-0 rounded shadow">
+                            <button @click="sendClosedAttractionToAttractionList" type="button"  class="close"   aria-label="Close" style="margin-top:-10px;margin-right:3px;">
+                              <span class="p-2" aria-hidden="true" style="font-size:1rem">&times;</span>
+                            </button>
+                            <div class="row">
+                              <div class="left px-0 overflow-hidden col-4" style="height:100px">
+                                <img :src="this.label2.Attrac_PicURL" class="d-block h-100 mx-auto">
+                              </div>
+                              <div class="right col-8 pr-0 pl-1 position-relative">
+                                <h6 class="">{{label2.Attrac_Name}}</h6>
+                                <div class=" position-absolute" style="bottom:0px;cursor:pointer;color:#bc2654" >
+
+                                  <label class=" my-0" style="font-size:0.7rem;">抵達：</label><input type="time" v-model="attracStartTime" @change="sendAttracStartTimeToAttractionList" class=" border-0" style="font-size:0.7rem;cursor:pointer;">
+                                  <br>
+                                  <label class=" my-0" style="font-size:0.7rem;">離開：</label><input type="time" v-model="attracLeaveTime" @change="sendAttracLeaveTimeToAttractionList" class=" border-0" style="font-size:0.7rem;cursor:pointer;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          `,
+        methods: {
+          sendClosedAttractionToAttractionList() {
+            this.$emit("ghi", this.label2);
+          },
+          sendAttracStartTimeToAttractionList() {
+            this.$emit(
+              "sendAttracStartTimeToAttractionList",
+              this.label2,
+              this.attracStartTime
+            );
+            // alert(`${this.attracStartTime}`);
+          },
+          sendAttracLeaveTimeToAttractionList() {
+            this.$emit(
+              "sendAttracLeaveTimeToAttractionList",
+              this.label2,
+              this.attracLeaveTime
+            );
+            // alert(`${this.attracStartTime}`);
+          },
+        },
+      });
+
+      Vue.component("attrac-modal", {
+        props: ["label4"],
+        template: `
+                    <div class="modal fade" id="attracModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">{{label4.Attrac_Name}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="w-100 overflow-hidden" style="height:20rem">
+                              <img :src="this.label4.Attrac_PicURL" class="d-block h-100 mx-auto">
+                            </div>
+                            <ul class="list-group list-group-flush">
+                              <li class="list-group-item px-1" style="font-size:0.9rem">
+                                <h6>地址：</h6>
+                                {{label4.Attrac_Addre}}
+                                </li>
+                              <li class="list-group-item px-1" style="font-size:0.9rem">
+                                <h6>電話：</h6>
+                                {{label4.Attrac_Tel}}
+                                </li>
+                              <li class="list-group-item px-1" style="font-size:0.9rem">
+                                <h6>開放時間：</h6>
+                                {{label4.Attrac_Open}}
+                              </li>
+                              <li class="list-group-item px-1" style="font-size:0.9rem">
+                                <h6>景點描述：</h6>
+                                {{label4.Attrac_Desc}}
+                                </li>
+                            </ul>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="container py-0">
+                              <div class="row justify-content-between">
+                                <p @click.stop="sendSelectedAttractionToAttractionList" id="addToSchedule" class=" p-1 m-0" style="color:#bc2654; font-size:1rem;cursor:pointer;">+ 加入行程</p>
+                                <!--<i @click.stop="sendSelectedAttractionToAttractionList3" class="p-1 pt-2 m-0 far fa-heart" style="color:#bc2654; font-size:1rem;cursor:pointer;"></i>-->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    `,
+        methods: {
+          sendSelectedAttractionToAttractionList() {
+            this.$emit("jkl", this.label4);
+          },
+          sendSelectedAttractionToAttractionList3(e) {
+            alert("xx");
+            this.$emit("def3", this.label4);
+            e.target.classList.add("fas");
+          },
+        },
+      });
+
+      Vue.component("attrac-footer", {
+        template: `
+      <footer>
+          <div class="container ft">
+              <div class="row">
+                  <div class="col-sm ft_column">
+                      <img src="./images/ft_circle.png" class="circle"><br>
+                      <p>排行程</p>
+                      <ul>
+                          <li><a href="plan.html">建立行程</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-sm ft_column">
+                      <img src="./images/ft_circle.png" class="circle"><br>
+                      <p>揪團</p>
+                      <ul>
+                          <li><a href="groupView.html">我要參團</a></li>
+                          <li><a href="groupView.html">我要開團</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-sm ft_column">
+                      <img src="./images/ft_circle.png" class="circle"><br>
+                      <p>遊記</p>
+                      <ul>
+                          <li><a href="blogView.html">熱門遊記</a></li>
+                          <li><a href="writeBlog.html">撰寫遊記</a></li>
+                      </ul>
+                  </div>
+
+                  <div class="col-sm ft_column">
+                      <img src="./images/ft_circle.png" class="circle"><br>
+                      <p>會員中心</p>
+                      <ul>
+                          <li><a id="ftaaa">我的收藏</a></li>
+                          <li><a id="ftbbb">我的行程</a></li>
+                          <li><a id="ftccc">我的揪團</a></li>
+                          <li><a id="ftddd">我的遊記</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="copyright">
+              自助大丈夫版權所有 Copyright © 2020
+          </div>
+      </footer>
+              `,
+      });
+
+      Vue.component("attrac-nav", {
+        template: `
+        <div class="mainBody">
+  <div class="navBg">   
+    <nav class="nav">
+      <div class="navLeft">
+        <a class="nav-link" href="main.html">         
+          <img src="./images/logo.png" alt="">
+          <div class="daijoubu">
+            <div class="daijoubuMd">自助大丈夫</div>
+            <div class="daijoubuEn">Easy Planning Trip</div>           
+          </div>
+        </a>
+      </div>
+      <div class="navCenter">
+        <a class="nav-link active nav-linkplan" href="plan.html">排行程</a>
+        <a class="nav-link nav-linkgroupView" href="groupView.html">揪團</a>
+        <a class="nav-link nav-linkblogView" href="blogView.html">遊記</a>
+        <a class="nav-link nav-linkMember" id="nav-linkMember">會員專區</a>
+      </div>
+      <div class="navRight">
+        <a id="aLogin" class="nav-link" style="text-decoration: none;" data-toggle="modal" data-target="#loginForm"><img src="./images/login.png" alt="">登入</a>
+        <div id="memberPic"></div>
+        <a id="aRegist" class="nav-link" style="text-decoration: none;" data-toggle="modal" data-target="#registerForm"><img src="./images/member.png" alt="">註冊</a>
+      </div>
+    </nav>
+    <!-- 漢堡導覽列 -->
+    <div class="navSmall">
+      <div class="navSmallLeft">
+        <button class="hamburger hamburger--collapse " type="button">
+            <span class="hamburger-box">
+              <span class="hamburger-inner"></span>
+            </span>
+        </button>
+        <div id="panel">		
+          <a href="plan.html">排行程</a> 
+          <a href="groupView.html">揪團</a>
+          <a href="blogView.html">遊記</a>
+          <a id="navSmallMember">會員專區</a>
+          <hr>
+          <a class="nav-link navSmallRight" style="text-decoration:none;transform:translateX(10px);" data-toggle="modal" data-target="#loginForm">登入</a>
+          <a class="nav-link navSmallRight1" id="qwer" style="text-decoration:none;transform:translateX(10px);" data-toggle="modal" data-target="#registerForm">註冊</a>
+        </div>
+      </div>
+      <a class="navSmallCenter" href="main.html"><img src="./images/logo.png" alt=""></a>
+      <div>
+        <!-- <a class="nav-link navSmallRight" style="text-decoration:none;" data-toggle="modal" data-target="#loginForm">登入</a>
+        <a class="nav-link navSmallRight1" id="qwer" style="text-decoration:none;" data-toggle="modal" data-target="#registerForm">註冊</a> -->
+      </div>
+      <!-- <a class="nav-link navSmallRight" style="text-decoration:none;" data-toggle="modal" data-target="#loginForm">登入</a> -->
+    </div>
+    <div class="container">
+      <div class="modal fade" id="loginForm" role="dialog">
+        <div class="modal-dialog">
+          <!-- 登入燈箱 -->
+          <div id="loginLightBox" class="modal-content">
+              <form action="#" method="get" class="loginform">
+                <div class="loginall">
+                <div class="loginnamea">
+                    <div class="logintitle">會員登入</div>
+                </div>    
+                    <div class="logincont">           
+                        <div class="loginacc">帳號：<input type="text" name="loginacc" size="10" class="loginacc" id="memId" style="margin: 1px;"></div>
+                        <div class="loginpsdw">密碼：<input type="text" name="loginpsdw" size="10" class="loginpsdw" id="memPsw" style="margin: 1px;"></div>
+                        <div class="logintwobtn">
+                        <button type="button" value="Submit"  id="loginbutton" class="loginleftbutton">送出</button>
+                        <button type="reset" value="Reset" class="loginrightbutton" id="loginrightbutton" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    <div class="modal fade" id="registerForm" role="dialog">
+      <div class="modal-dialog">
+        <!-- 註冊燈箱 -->
+        <div class="modal-content">
+            <form action="regist.php" method="post" class="enrollfrom" id="enrollfrom" name="enrollfrom" onclick="return false">
+              <div class="enrollall">
+              <div class="enrollnamea">
+                  <div class="enrolltitle">會員註冊</div>
+              </div>    
+                  <div class="enrollcont">           
+                      <div class="enrollname">名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;稱：<input type="text" class="textbox" id="r_memName" name="r_memName" size="10" style="margin: 1px;" autocomplete="off"></div>                     
+                      <div class="enrollacc">帳&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;號：<input type="text" class="accbox" id="r_memId" name="r_memId" size="10" style="margin: 1px;" autocomplete="off"></div>  
+                      <div id="accountCheck" style="font-size:12px;"></div>              
+                      <div class="enrollpsdw">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;碼：<input type="text" class="psdwbox" id="r_memPsw" name="r_memPsw" size="10" style="margin: 1px;" autocomplete="off"></div>
+                      <div id="passwordCheck" style="font-size:12px;"></div>
+                      <div class="psdwconf">確認密碼：<input type="text" class="accconbox" id="r_memPsw2" name="r_memPsw2" size="10" style="margin: 1px;" autocomplete="off"></div>
+                      <div id="passwordCheck2" style="font-size:12px;"></div>
+                      <div class="enrollgend">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;別：
+                          <input type="radio" id="male" name="r_memSex" value="1">
+                          <label id="maleradio" for="male">男</label>
+                          <input type="radio" id="female" name="r_memSex" value="2">
+                          <label id="femaleradio" for="female">女</label>     
+                      </div>
+                      <div class="enrollmail">聯絡信箱：<input type="email" class="emailbox" id="r_memEmail" name="r_memEmail" size="10" style="margin: 1px;" autocomplete="off"></div>
+                      <div id="emailCheck" style="font-size:12px;"></div>
+                      <div class="enrollmail">聯絡電話：<input type="tel" class="phonebox" id="r_memTel" name="r_memTel" size="10" style="margin: 1px;" autocomplete="off"></div>
+                      <div id="phoneCheck" style="font-size:12px;"></div>
+                      <div class="enrollbirth">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：<input type="text" class="birthbox" id="r_memBirth" placeholder=" YYYY-MM-DD" name="r_memBirth" size="10" autocomplete="off"></div>
+                      <div id="birthCheck" style="font-size:12px;"></div>  
+                      <div class="enrolltwobtn">
+                          <button type="submit" value="Submit" class="enrollleftbutton">送出</button>
+                          <button type="reset" value="Reset" class="enrollrightbutton loginrightbutton" id="registrightbutton" data-dismiss="modal">取消</button>
+                      </div>
+                  </div>
+              </div>
+          </form>
+        </div>
+      </div>
+  </div>
+</div>   
+</div> 
+              `,
+      });
+
+      //Reference///////////////////////////////////////////////////////////////////////////////////////
+      // Vue.component("attraction-schedule", {
+      //   template: `
+      //   <!-- 交通方式選擇
+      //       <div class="col google-map">
+      //         <input type="radio" v-model="travelMode" value="WALKING" @change="getCurrent"/>走路
+      //         <input type="radio" v-model="travelMode" value="BICYCLING" @change="getCurrent"/>自行車
+      //         <input type="radio" v-model="travelMode" value="DRIVING" @change="getCurrent"/>開車
+      //       </div>-->
+      //   <!-- 顯示距離列表
+      //       <section class="row">
+      //         <div class="col-md-4">
+      //           <div class="list-group">
+      //             <div v-for="f in selectedAttractions" class="list-group-item">
+      //               <h5 class="mb-1">{{ f.Attrac_Name }}</h5>
+      //               <span class="float-left mb-0 text-primary">{{ f.distance_text }}</span>
+      //               <span class="float-right mb-0 text-primary">{{ f.distance_time }}</span>
+      //             </div>
+      //           </div>
+      //         </div>-->
+      //   <!-- 顯示地圖
+      //         <div class="col-md-8 google-map">
+      //           <div id="map" class="embed-responsive embed-responsive-16by9"></div>
+      //         </div>
+      //       </section>-->
+      //         `,
+      //   data() {
+      //     return {
+      //       map: null,
+      //       selectedAttractions: [], // 放景點的array
+      //       travelMode: "",
+      //     };
+      //   },
+      //   methods: {
+      //     // initMap() {
+      //     //   // 地圖初始化：
+      //     //   let location = {
+      //     //     lat: 25.0374865,
+      //     //     lng: 121.5647688,
+      //     //   };
+      //     //   this.map = new google.maps.Map(document.getElementById("map"), {
+      //     //     center: location,
+      //     //     zoom: 12,
+      //     //   });
+      //     //   axios.get("./json/aoi.json").then((response) => {
+      //     //     // (2)將取得的景點寫入selectedAttractions
+      //     //     this.selectedAttractions = response.data;
+      //     //     //(1) 將各景點寫入marker
+      //     //     this.selectedAttractions.forEach((r) => {
+      //     //       let latLng = new google.maps.LatLng(r.Py, r.Px);
+      //     //       let marker = new google.maps.Marker({
+      //     //         position: latLng,
+      //     //         map: this.map,
+      //     //         icon:
+      //     //           "https://cdn0.iconfinder.com/data/icons/lumin-social-media-icons/512/Location-32.png",
+      //     //       });
+      //     //       this.map.panTo(latLng);
+      //     //     });
+      //     //   });
+      //     // },
+      //     getCurrent() {
+      //       const _this = this;
+      //       let destinations = [];
+      //       _this.selectedAttractions.forEach((f) => {
+      //         destinations.push(new google.maps.LatLng(f.Py, f.Px));
+      //       });
+      //       const service = new google.maps.DistanceMatrixService();
+      //       service.getDistanceMatrix(
+      //         {
+      //           origins: destinations,
+      //           destinations: destinations,
+      //           travelMode: `${this.travelMode}`, // 交通方式：BICYCLING(自行車)、DRIVING(開車，預設)、TRANSIT(大眾運輸)、WALKING(走路)
+      //           unitSystem: google.maps.UnitSystem.METRIC, // 單位 METRIC(公里，預設)、IMPERIAL(哩)
+      //           avoidHighways: true, // 是否避開高速公路
+      //           avoidTolls: true, // 是否避開收費路線
+      //         },
+      //         callback
+      //       );
+      //       function callback(response, status) {
+      //         // 把距離寫進json裡
+      //         for (
+      //           let i = 1, len = _this.selectedAttractions.length;
+      //           i < len;
+      //           i++
+      //         ) {
+      //           _this.selectedAttractions[i].distance =
+      //             response.rows[0].elements[i].distance.value;
+      //           _this.selectedAttractions[i].distance_text =
+      //             response.rows[0].elements[i].distance.text;
+      //           _this.selectedAttractions[i].distance_time =
+      //             response.rows[0].elements[i].duration.text;
+      //         }
+      //         // 按距離重排
+      //         _this.selectedAttractions = _this.selectedAttractions.sort(
+      //           (a, b) => {
+      //             return a.distance > b.distance ? 1 : -1;
+      //           }
+      //         );
+      //         // console.log(_this.selectedAttractions);
+      //       }
+      //     },
+      //   },
+      //   // mounted() {
+      //   //   // window.addEventListener("load", () => {
+      //   //   this.initMap();
+      //   //   // });
+      //   // },
+      // });
+
+      new Vue({
+        el: "#app",
+      });
+    </script>
+  </body>
+</html>

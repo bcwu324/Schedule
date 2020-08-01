@@ -78,7 +78,7 @@
   <body>
     <div id="app">
       <attrac-nav></attrac-nav>
-      <div class="container px-1" style="margin-top: 80px;">
+      <div class="container px-1" style="margin-top: 30px;">
         <attraction-list></attraction-list>
       </div>
       <attrac-footer></attrac-footer>
@@ -99,7 +99,7 @@
                     <div class=" input-group p-0">
                       <input type="text" class="form-control" v-model="queryAttractionName" @keydown.enter='sendInputToAttractionList' placeholder="搜尋景點名稱">
                       <div class="input-group-append">
-                        <span class="input-group-text rounded-right px-2" id="basic-addon2"><i class="fas fa-search" style="font-size:0.9rem;"></i></span>
+                        <span @click='sendInputToAttractionList' class="input-group-text rounded-right px-2" id="basic-addon2"><i class="fas fa-search" style="font-size:0.9rem;"></i></span>
                       </div>
                     </div>
 
@@ -137,16 +137,12 @@
         methods: {
           sendInputToAttractionList(e) {
             this.$emit("abc", this.queryAttractionName);
-            // this.queryAttractionName = "";
             this.inputValueForRegionSearch = e.target.value;
-            // console.log(this.inputValueForRegionSearch);
           },
           sendKeepAttracSearchToAttractionList() {
             this.$emit("abc2");
           },
           sendRegionSelectToAttractionList(e) {
-            // console.log(e.target.value);
-            // console.log(this.inputValueForRegionSearch);
             this.$emit("abc3", e.target.value, this.queryAttractionName);
           },
         },
@@ -221,64 +217,58 @@
         },
         methods: {
           initialAttraction() {
-            $.get(`searchAttrac.php?searchedName=觀光`).then((data) => {
+            $.get(`searchAttrac.php?searchedName=觀光工廠`).then((data) => {
               if (JSON.parse(data) == 0) {
-                alert("無此景點");
+                alert("查無此景點");
               } else {
                 this.searchedAttractions = JSON.parse(data);
-                console.log(this.searchedAttractions);
               }
             });
           },
           getSearchedAttractionsFromPHP(x) {
             $.get(`searchAttrac.php?searchedName=${x}`).then((data) => {
               if (JSON.parse(data) == 0) {
-                alert("無此景點");
+                alert("查無此景點");
               } else {
                 this.searchedAttractions = JSON.parse(data);
-                console.log(this.searchedAttractions);
               }
             });
           },
           getSearchedKeepAttractionsFromPHP() {
-            $.get("getMemberInfo.php").then((data) => {
-              let memNOFromPHP = JSON.parse(data).Mem_NO;
-              console.log(`memno:${memNOFromPHP}`);
-              if (data == "{}") {
-                alert("請先登入會員");
-              } else {
-                this.MemNO = memNOFromPHP;
-                $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then(
-                  (data) => {
-                    if (JSON.parse(data) == 0) {
-                      alert("尚無收藏任何景點");
-                    } else {
-                      this.searchedAttractions = JSON.parse(data);
-                      console.log(this.searchedAttractions);
-                    }
-                  }
-                );
-              }
-            });
-
-            // check if logged, if true, get and input MemNO:
-            // if (true) {
-            //   this.MemNO = 1;
-            // }
-            // $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then((data) => {
-            //   if (JSON.parse(data) == 0) {
-            //     alert("尚無收藏任何景點");
+            // $.get("getMemberInfo.php").then((data) => {
+            //   let memNOFromPHP = JSON.parse(data).Mem_NO;
+            //   console.log(`memno:${memNOFromPHP}`);
+            //   if (data == "{}") {
+            //     alert("請先登入會員");
             //   } else {
-            //     this.searchedAttractions = JSON.parse(data);
-            //     console.log(this.searchedAttractions);
+            //     this.MemNO = memNOFromPHP;
+            //     $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then(
+            //       (data) => {
+            //         if (JSON.parse(data) == 0) {
+            //           alert("尚無收藏任何景點");
+            //         } else {
+            //           this.searchedAttractions = JSON.parse(data);
+            //           console.log(this.searchedAttractions);
+            //         }
+            //       }
+            //     );
             //   }
             // });
+
+            //check if logged, if true, get and input MemNO:
+            if (true) {
+              this.MemNO = 1;
+            }
+            $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then((data) => {
+              if (JSON.parse(data) == 0) {
+                alert("尚無收藏任何景點");
+              } else {
+                this.searchedAttractions = JSON.parse(data);
+              }
+            });
           },
           getSearchedRegionAttractionsFromPHP(x, y) {
-            // console.log(typeof x);
-            // console.log(typeof y);
             if (y == "") {
-              // alert("nothing");
               $.get(`searchAttracRegionWoInput.php?Region=${x}`).then(
                 (data) => {
                   if (JSON.parse(data) == 0) {
@@ -325,7 +315,6 @@
                       <hr style="margin:0.2rem auto;">
                       <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Attrac_Addre}</h6>
                       <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Attrac_Tel}</h6>
-                      <h6 style="font-size:0.6rem;margin:0.2rem auto;">${x.Website}</h6>
 
                     </div>
                     `;
@@ -378,36 +367,37 @@
 
             // /////////////////////////////////////////////////////////////
             // check if logged, if true, get and input MemNO:
-            $.get("getMemberInfo.php").then((data) => {
-              let memNOFromPHP = JSON.parse(data).Mem_NO;
-              console.log(`memno:${memNOFromPHP}`);
-              if (data == "{}") {
-                alert("請先登入會員");
-              } else {
-                this.toBeSavedSchedule.MemNO = memNOFromPHP;
-                // check if shceName and any attraction in direction:
-                if (this.toBeSavedSchedule.scheName == "") {
-                  alert("請輸入行程名稱");
-                } else if (this.selectedAttractions.length == 0) {
-                  alert("請輸入至少一個景點");
-                } else {
-                  //input scheStatus:
-                  confirm("已完成行程編輯？")
-                    ? (this.toBeSavedSchedule.scheStatus = 1)
-                    : (this.toBeSavedSchedule.scheStatus = 0);
-                  // alert(this.toBeSavedSchedule.scheStatus);
-                  // input selectedAttractions:
-                  this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
-                  // console.log(this.toBeSavedSchedule.selectedAttractions);
-                  $.ajax({
-                    method: "POST",
-                    url: "saveSchedule.php",
-                    data: this.toBeSavedSchedule,
-                    dataType: "json",
-                  });
-                }
-              }
-            });
+            // $.get("getMemberInfo.php").then((data) => {
+            // let memNOFromPHP = JSON.parse(data).Mem_NO;
+            // console.log(`memno:${memNOFromPHP}`);
+            // if (data == "{}") {
+            //   alert("請先登入會員");
+            // } else {
+            // this.toBeSavedSchedule.MemNO = memNOFromPHP;
+            this.toBeSavedSchedule.MemNO = 1;
+            // check if shceName and any attraction in direction:
+            if (this.toBeSavedSchedule.scheName == "") {
+              alert("請輸入行程名稱");
+            } else if (this.selectedAttractions.length == 0) {
+              alert("請輸入至少一個景點");
+            } else {
+              //input scheStatus:
+              confirm("已完成行程編輯？")
+                ? (this.toBeSavedSchedule.scheStatus = 1)
+                : (this.toBeSavedSchedule.scheStatus = 0);
+              // alert(this.toBeSavedSchedule.scheStatus);
+              // input selectedAttractions:
+              this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
+              // console.log(this.toBeSavedSchedule.selectedAttractions);
+              $.ajax({
+                method: "POST",
+                url: "saveSchedule.php",
+                data: this.toBeSavedSchedule,
+                dataType: "json",
+              });
+            }
+            // }
+            // });
           },
           sendAttracStartTimeToBackend(x, y) {
             let n = this.selectedAttractions.indexOf(x);
@@ -425,34 +415,34 @@
           },
           saveKeepAttrap(x) {
             // check if logged, if true, get and input MemNO:
-            $.get("getMemberInfo.php").then((data) => {
-              let memNOFromPHP = JSON.parse(data).Mem_NO;
-              console.log(memNOFromPHP);
-              if (data == "{}") {
-                alert("請先登入會員");
-              } else {
-                this.MemNO = memNOFromPHP;
-                console.log(this.MemNO);
-                let n = this.searchedAttractions.indexOf(x);
-                $.get(
-                  `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
-                ).then((data) => {
-                  if (JSON.parse(data) == 0) {
-                    $.ajax({
-                      method: "POST",
-                      url: "saveClickedKeepAttrac.php",
-                      data: {
-                        saveKeepMemNO: `${this.MemNO}`,
-                        saveKeepAttracNO: `${this.searchedAttractions[n].Attrac_NO}`,
-                      },
-                      dataType: "json",
-                    });
-                  } else {
-                    alert("已收藏過此景點");
-                  }
+            // $.get("getMemberInfo.php").then((data) => {
+            //   let memNOFromPHP = JSON.parse(data).Mem_NO;
+            //   console.log(memNOFromPHP);
+            //   if (data == "{}") {
+            //     alert("請先登入會員");
+            //   } else {
+            this.MemNO = 1;
+            // console.log(this.MemNO);
+            let n = this.searchedAttractions.indexOf(x);
+            $.get(
+              `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
+            ).then((data) => {
+              if (JSON.parse(data) == 0) {
+                $.ajax({
+                  method: "POST",
+                  url: "saveClickedKeepAttrac.php",
+                  data: {
+                    saveKeepMemNO: `${this.MemNO}`,
+                    saveKeepAttracNO: `${this.searchedAttractions[n].Attrac_NO}`,
+                  },
+                  dataType: "json",
                 });
+              } else {
+                alert("已收藏過此景點");
               }
             });
+            // }
+            // });
 
             // if keep is not existed then save it, if keep is existed then alert :
             // check if keep is existed:
@@ -519,11 +509,11 @@
           sendSelectedAttractionToAttractionList3(e) {
             this.$emit("def3", this.label);
 
-            $.get("getMemberInfo.php").then((data) => {
-              if (data != "{}") {
-                e.target.classList.add("fas");
-              }
-            });
+            // $.get("getMemberInfo.php").then((data) => {
+            //   if (data != "{}") {
+            e.target.classList.add("fas");
+            // }
+            // });
           },
         },
         computed: {

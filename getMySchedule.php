@@ -2,7 +2,7 @@
 try{
     require_once("connectMemberTable.php");
     
-    $sql = "select * from sche join attrac_sche on sche.Sche_NO=attrac_sche.Sche_NO   join attraction on attrac_sche.Attrac_NO=attraction.Attrac_NO where Mem_NO=:memNO";
+    $sql = "select * from sche join attrac_sche on sche.Sche_NO=attrac_sche.Sche_NO   join attraction on attrac_sche.Attrac_NO=attraction.Attrac_NO where Mem_NO=:memNO order by sche.Sche_Name";
 
     $attraction = $pdo->prepare($sql); 
     $attraction->bindValue(":memNO",$_GET["memNO"]);

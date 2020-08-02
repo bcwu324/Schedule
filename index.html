@@ -93,7 +93,7 @@
     <script>
       Vue.component("attraction-input", {
         template: `
-              <div class="container py-5">
+              <div class="container pt-3 pb-4">
                 <div class="row">
                   <div class="d-flex col-md-10 px-0">
                     <div class=" input-group p-0">
@@ -151,6 +151,10 @@
       Vue.component("attraction-list", {
         template: `
                             <div>
+                              <h5 class="text-primary mt-3">
+                                  行程規劃
+                                </h5>
+                                <hr class="bg-primary">
                               <attrac-modal @jkl="addSelectedAttractionsToDirection" @def3="saveKeepAttrap" :label4="attracModal"></attrac-modal>
 
                               <attraction-input @abc="getSearchedAttractionsFromPHP" @abc2="getSearchedKeepAttractionsFromPHP" @abc3="getSearchedRegionAttractionsFromPHP"></attraction-input>
@@ -192,13 +196,39 @@
                                   </div>
                                 </div>
                               </div>
+                              <div>
+                                <h5 class="text-primary">
+                                  我的行程
+                                </h5>
+                                <hr class="bg-primary">
+                                <table class="table table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">會員ID</th>
+                                      <th scope="col">行程名稱</th>
+                                      <th scope="col">景點名稱</th>
+                                      <th scope="col">抵達時間</th>
+                                      <th scope="col">離開時間</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr v-for="savedSchedule in savedSchedules">
+                                      <th scope="row">{{savedSchedule.Mem_NO}}</th>
+                                      <td>{{savedSchedule.Sche_Name}}</td>
+                                      <td>{{savedSchedule.Attrac_Name}}</td>
+                                      <td>{{savedSchedule.Attrac_Start_Time}}</td>
+                                      <td>{{savedSchedule.Attrac_Leave_Time}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
                             </div>
                                     `,
         data() {
           return {
             searchedAttractions: [],
             selectedAttractions: [],
-            MemNO: "",
+            MemNO: Math.floor(Math.random() * 10000),
             map: null,
             mapCenter: {
               lat: 23.7074865,
@@ -211,8 +241,10 @@
               scheStatus: "",
               selectedAttractions: [],
               attracStartTime: [],
+              attracLeaveTime: [],
             },
             attracModal: {},
+            savedSchedules: [],
           };
         },
         methods: {
@@ -235,30 +267,7 @@
             });
           },
           getSearchedKeepAttractionsFromPHP() {
-            // $.get("getMemberInfo.php").then((data) => {
-            //   let memNOFromPHP = JSON.parse(data).Mem_NO;
-            //   console.log(`memno:${memNOFromPHP}`);
-            //   if (data == "{}") {
-            //     alert("請先登入會員");
-            //   } else {
-            //     this.MemNO = memNOFromPHP;
-            //     $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then(
-            //       (data) => {
-            //         if (JSON.parse(data) == 0) {
-            //           alert("尚無收藏任何景點");
-            //         } else {
-            //           this.searchedAttractions = JSON.parse(data);
-            //           console.log(this.searchedAttractions);
-            //         }
-            //       }
-            //     );
-            //   }
-            // });
-
-            //check if logged, if true, get and input MemNO:
-            if (true) {
-              this.MemNO = 1;
-            }
+            console.log(this.MemNO);
             $.get(`searchKeepAttrac.php?MemNO=${this.MemNO}`).then((data) => {
               if (JSON.parse(data) == 0) {
                 alert("尚無收藏任何景點");
@@ -287,7 +296,6 @@
                   alert("查無景點");
                 } else {
                   this.searchedAttractions = JSON.parse(data);
-                  console.log(this.searchedAttractions);
                 }
               });
             }
@@ -339,42 +347,9 @@
             );
           },
           saveSchedule() {
-            // // check if logged, if true, get and input MemNO:
-            // if (true) {
-            //   this.toBeSavedSchedule.MemNO = 1;
-            // }
-            // // check if shceName and any attraction in direction:
-            // if (this.toBeSavedSchedule.scheName == "") {
-            //   alert("請輸入行程名稱");
-            // } else if (this.selectedAttractions.length == 0) {
-            //   alert("請輸入至少一個景點");
-            // } else {
-            //   //input scheStatus:
-            //   confirm("已完成行程編輯？")
-            //     ? (this.toBeSavedSchedule.scheStatus = 1)
-            //     : (this.toBeSavedSchedule.scheStatus = 0);
-            //   alert(this.toBeSavedSchedule.scheStatus);
-            //   // input selectedAttractions:
-            //   this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
-            //   // console.log(this.toBeSavedSchedule.selectedAttractions);
-            //   $.ajax({
-            //     method: "POST",
-            //     url: "saveSchedule.php",
-            //     data: this.toBeSavedSchedule,
-            //     dataType: "json",
-            //   });
-            // }
-
-            // /////////////////////////////////////////////////////////////
-            // check if logged, if true, get and input MemNO:
-            // $.get("getMemberInfo.php").then((data) => {
-            // let memNOFromPHP = JSON.parse(data).Mem_NO;
-            // console.log(`memno:${memNOFromPHP}`);
-            // if (data == "{}") {
-            //   alert("請先登入會員");
-            // } else {
-            // this.toBeSavedSchedule.MemNO = memNOFromPHP;
-            this.toBeSavedSchedule.MemNO = 1;
+            this.toBeSavedSchedule.MemNO = this.MemNO;
+            console.log(this.toBeSavedSchedule.MemNO);
+            console.log(this.toBeSavedSchedule);
             // check if shceName and any attraction in direction:
             if (this.toBeSavedSchedule.scheName == "") {
               alert("請輸入行程名稱");
@@ -385,44 +360,60 @@
               confirm("已完成行程編輯？")
                 ? (this.toBeSavedSchedule.scheStatus = 1)
                 : (this.toBeSavedSchedule.scheStatus = 0);
-              // alert(this.toBeSavedSchedule.scheStatus);
               // input selectedAttractions:
               this.toBeSavedSchedule.selectedAttractions = this.selectedAttractions;
-              // console.log(this.toBeSavedSchedule.selectedAttractions);
               $.ajax({
                 method: "POST",
                 url: "saveSchedule.php",
                 data: this.toBeSavedSchedule,
                 dataType: "json",
-              });
+              })
+                .done(alert("成功儲存一筆行程"))
+                .then(
+                  $.get(`getMySchedule.php?memNO=${this.MemNO}`).then(
+                    (data) => {
+                      let arr = JSON.parse(data);
+                      this.savedSchedules = arr;
+                      console.log(arr);
+                      console.log(this.savedSchedules);
+                      // let savedSchedule = {};
+                      // savedSchedule.Sche_Name = arr[0].Sche_Name;
+                      // savedSchedule.Mem_NO = arr[0].Mem_NO;
+                      // savedSchedule.Sche_Img = arr[0].Sche_Img;
+                      // savedSchedule.Attrac_NO = [];
+                      // savedSchedule.Attrac_Start_Time = [];
+                      // savedSchedule.Attrac_Leave_Time = [];
+                      // arr.forEach((r) => {
+                      //   savedSchedule.Attrac_NO.push(r.Attrac_NO);
+                      //   savedSchedule.Attrac_Start_Time.push(
+                      //     r.Attrac_Start_Time
+                      //   );
+                      //   savedSchedule.Attrac_Leave_Time.push(
+                      //     r.Attrac_Leave_Time
+                      //   );
+                      // });
+
+                      // this.mySchedules.push(savedSchedule);
+
+                      // console.log(this.mySchedules);
+                    }
+                  )
+                );
             }
-            // }
-            // });
           },
           sendAttracStartTimeToBackend(x, y) {
             let n = this.selectedAttractions.indexOf(x);
             this.selectedAttractions[n].attracStartTime = y;
-            // console.log(this.selectedAttractions);
           },
           sendAttracLeaveTimeToBackend(x, y) {
             let n = this.selectedAttractions.indexOf(x);
             this.selectedAttractions[n].attracLeaveTime = y;
-            // console.log(this.selectedAttractions);
           },
           addSelectedAttractionsToModal(x) {
             this.attracModal = x;
-            // console.log(this.attracModal);
           },
           saveKeepAttrap(x) {
-            // check if logged, if true, get and input MemNO:
-            // $.get("getMemberInfo.php").then((data) => {
-            //   let memNOFromPHP = JSON.parse(data).Mem_NO;
-            //   console.log(memNOFromPHP);
-            //   if (data == "{}") {
-            //     alert("請先登入會員");
-            //   } else {
-            this.MemNO = 1;
-            // console.log(this.MemNO);
+            // this.MemNO = 1;
             let n = this.searchedAttractions.indexOf(x);
             $.get(
               `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
@@ -441,30 +432,6 @@
                 alert("已收藏過此景點");
               }
             });
-            // }
-            // });
-
-            // if keep is not existed then save it, if keep is existed then alert :
-            // check if keep is existed:
-
-            // let n = this.searchedAttractions.indexOf(x);
-            // $.get(
-            //     `checkClickedKeepAttrac.php?KeepMemNO=${this.MemNO}&KeepAttracNO=${this.searchedAttractions[n].Attrac_NO}`
-            // ).then((data) => {
-            //     if (JSON.parse(data) == 0) {
-            //         $.ajax({
-            //             method: "POST",
-            //             url: "saveClickedKeepAttrac.php",
-            //             data: {
-            //                 saveKeepMemNO: `${this.MemNO}`,
-            //                 saveKeepAttracNO: `${this.searchedAttractions[n].Attrac_NO}`,
-            //             },
-            //             dataType: "json",
-            //         });
-            //     } else {
-            //         alert("已收藏過此景點");
-            //     }
-            // });
           },
           reloadWindow() {
             location.reload();
@@ -509,16 +476,11 @@
           sendSelectedAttractionToAttractionList3(e) {
             this.$emit("def3", this.label);
 
-            // $.get("getMemberInfo.php").then((data) => {
-            //   if (data != "{}") {
             e.target.classList.add("fas");
-            // }
-            // });
           },
         },
         computed: {
           alreadyKeep() {
-            ////////////////////////////////////////////
             if (this.label.Keep_Attrac_NO != null) {
               return "fas";
             }
@@ -565,7 +527,6 @@
               this.label2,
               this.attracStartTime
             );
-            // alert(`${this.attracStartTime}`);
           },
           sendAttracLeaveTimeToAttractionList() {
             this.$emit(
@@ -573,7 +534,6 @@
               this.label2,
               this.attracLeaveTime
             );
-            // alert(`${this.attracStartTime}`);
           },
         },
       });
